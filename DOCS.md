@@ -4,7 +4,7 @@
 
  - **ADMIN:** Should be able to access all the functionality of the system such as: Create an account, generate a credit/debit card, create a statement, view statements, create an invoice, deposit money, transfer money, balance enquiry and more.
  - **MANAGER:** Should be able to create an account, create statement, generate a credit/debit card, deposit money, transfer money.
- - **USER:** Should be able to create an account, generate a credit card, deposit money, transfer money, drawn money, balance enquiry, view statements, pay invoice, make purchases, add contacts.
+ - **USER:** Should be able to create an account, generate a credit card, deposit money, transfer money, draw money, balance enquiry, view statements, pay invoice, make purchases, add contacts.
 
 ## Functional Requirements
 
@@ -15,7 +15,7 @@
 - **Deposit Money:** A user should be able to deposit money in the bank.
 - **Transfer Money:** A user should be able to transfer money to another account.
 - **Balance Enquiry:** A user should be able to see how much money they have in their accounts.
-- **Drawn Money:** A user should be able to take off their money from the bank.
+- **Draw Money:** A user should be able to take off their money from the bank.
 - **Make Purchases:** A user should be able to make credit and debit purchases.
 
 ### Important
