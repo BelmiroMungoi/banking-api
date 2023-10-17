@@ -32,6 +32,9 @@ public class BankAccount {
     private List<BankAccount> contacts;
 
     public void transferTo(BigDecimal amount, BankAccount recipient) {
+        if (!this.hasAvailableAmount(amount)) {
+            throw new RuntimeException("Você não têm saldo suficiente para realizar a transferência");
+        }
         recipient.setAccountBalance(recipient.getAccountBalance().add(amount));
         this.setAccountBalance(this.getAccountBalance().subtract(amount));
     }
@@ -41,7 +44,14 @@ public class BankAccount {
     }
 
     public void withdraw(BigDecimal amount) {
-        this.setAccountBalance(this.getAccountBalance().subtract(amount));
+        if (this.hasAvailableAmount(amount)) {
+            if (this.isAmountGreaterThanBalance(amount)) {
+                throw new RuntimeException("Falha na transacção. O valor inserido é maior ao valor disponível na sua conta!");
+            }
+            this.setAccountBalance(this.getAccountBalance().subtract(amount));
+        } else {
+            throw new RuntimeException("Você não têm dinheiro suficiente para fazer um saque");
+        }
     }
 
     public void pay(BigDecimal amount) {
@@ -57,5 +67,9 @@ public class BankAccount {
 
     public boolean hasAvailableAmount(BigDecimal amount) {
         return this.getAccountBalance().compareTo(amount) > 0;
+    }
+
+    public boolean isAmountGreaterThanBalance(BigDecimal amount) {
+        return amount.compareTo(accountBalance) > 0;
     }
 }
