@@ -26,13 +26,15 @@ public class User implements UserDetails {
     private String lastname;
     @Column(nullable = false, unique = true)
     private String email;
+    @Column(nullable = false, unique = true)
+    private String phoneNumber;
     @Column(nullable = false)
     private String username;
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
     private LocalDate birthdate;
-    private boolean isUserLocked;
+    private boolean isUserNonLocked;
     private boolean isUserEnabled;
 
     @Override
@@ -57,12 +59,12 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return isUserLocked;
+        return isUserNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
