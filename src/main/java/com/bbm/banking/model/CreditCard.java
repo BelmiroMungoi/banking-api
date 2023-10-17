@@ -29,7 +29,7 @@ public class CreditCard {
     private List<BankStatement> statements;
 
     public void payInvoice(BigDecimal amount) {
-        if (!this.hasInvoice()) {
+        if (this.hasInvoice()) {
             if (bankAccount.hasAvailableAmount(amount)) {
                 if (isAmountGreaterThanInvoice(amount)) {
                     throw new IllegalStateException("Falha na transacção. O valor inserido é maior ao da factura");
@@ -44,6 +44,24 @@ public class CreditCard {
         } else {
             throw new RuntimeException("O seu cartão não possui nenhuma factura");
         }
+    }
+
+    public void makeCreditPurchase(BigDecimal amount) {
+        if (this.hasBalance()) {
+            if (this.isAmountGreaterThanBalance(amount)) {
+                throw new IllegalStateException("Falha na transacção. O valor inserido é maior ao da compra");
+            }
+            balance = balance.subtract(amount);
+            invoice = invoice.add( new BigDecimal("10.00"));
+            createCreditPurchaseStatement(amount);
+        } else {
+            throw new IllegalStateException("O seu cartão não possui saldo suficiente para realizar a compra");
+        }
+    }
+
+    public void makeDebitPurchase(BigDecimal amount) {
+        this.bankAccount.pay(amount);
+        createDebitPurchaseStatement(amount);
     }
 
     public void createInvoicePaymentStatement(BigDecimal amount) {
@@ -70,10 +88,10 @@ public class CreditCard {
     }
 
     public boolean hasBalance() {
-        return balance.equals(BigDecimal.ZERO);
+        return !balance.equals(BigDecimal.ZERO);
     }
 
     public boolean hasInvoice() {
-        return invoice.equals(BigDecimal.ZERO);
+        return !invoice.equals(BigDecimal.ZERO);
     }
 }
