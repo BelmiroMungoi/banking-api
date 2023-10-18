@@ -1,10 +1,9 @@
 package com.bbm.banking.service;
 
-import com.bbm.banking.dto.request.UserRequestDto;
-import org.springframework.stereotype.Service;
+import com.bbm.banking.dto.request.AccountRequestDto;
+import com.bbm.banking.model.User;
 
-@Service
 public interface UserService {
 
-    void createUser(UserRequestDto userRequest);
+    User createUser(AccountRequestDto userRequest);
 }
