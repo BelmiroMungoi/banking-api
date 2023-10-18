@@ -18,7 +18,7 @@ public class BankAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false, unique = true)
-    private int accountNumber;
+    private String accountNumber;
     @Column(nullable = false)
     private BigDecimal accountBalance;
     @OneToOne
