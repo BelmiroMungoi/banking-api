@@ -18,7 +18,7 @@ public class CreditCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false, unique = true)
-    private int cardNumber;
+    private String cardNumber;
     @Column(nullable = false)
     private BigDecimal invoice;
     @Column(nullable = false)
@@ -70,12 +70,12 @@ public class CreditCard {
     }
 
     public void createCreditPurchaseStatement(BigDecimal amount) {
-        var statement = BankStatement.createCreditCardStatement(amount, "Pagamento Realizada", bankAccount);
+        var statement = BankStatement.createCreditCardStatement(amount, "Pagamento Realizado", bankAccount);
         this.statements.add(statement);
     }
 
     public void createDebitPurchaseStatement(BigDecimal amount) {
-        var statement = BankStatement.createDebitCardStatement(amount, "Pagamento Realizado", bankAccount);
+        var statement = BankStatement.createDebitCardStatement(amount, "Pagamento Realizado no Débito", bankAccount);
         this.statements.add(statement);
     }
 
