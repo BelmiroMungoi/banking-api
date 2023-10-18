@@ -1,6 +1,7 @@
 package com.bbm.banking.controller;
 
 import com.bbm.banking.dto.request.AccountRequestDto;
+import com.bbm.banking.dto.request.DepositRequest;
 import com.bbm.banking.dto.response.AccountInfo;
 import com.bbm.banking.dto.response.HttpResponse;
 import com.bbm.banking.service.BankAccountService;
@@ -26,5 +27,10 @@ public class AccountController {
     @GetMapping
     public ResponseEntity<List<AccountInfo>> getAllAccounts() {
         return ResponseEntity.ok(accountService.findAllAccounts());
+    }
+
+    @PutMapping("/deposit")
+    public ResponseEntity<HttpResponse> depositMoney(@RequestBody DepositRequest request) {
+        return ResponseEntity.ok(accountService.deposit(request));
     }
 }
