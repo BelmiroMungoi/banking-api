@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class HttpResponse {
 
-    private HttpStatus responseCode;
+    private int responseCode;
+    private HttpStatus responseStatus;
     private String responseMessage;
     private LocalDateTime createdAt;
     private AccountInfo accountInfo;
