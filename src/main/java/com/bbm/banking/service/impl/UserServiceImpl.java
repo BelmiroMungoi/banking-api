@@ -15,6 +15,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(AccountRequestDto userRequest) {
+        if (userRepository.existsByEmail(userRequest.getEmail())) {
+            throw new RuntimeException("Já existe uma conta registrada com esse email!");
+        }
+        if (userRepository.existsByPhoneNumber(userRequest.getPhoneNumber())) {
+            throw new RuntimeException("Oops. Já existe uma conta registrada com esse número de celular");
+        }
+
         User userToBeSaved = User.builder()
                 .firstname(userRequest.getFirstname())
                 .lastname(userRequest.getLastname())
