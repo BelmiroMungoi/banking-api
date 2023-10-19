@@ -6,6 +6,7 @@ import com.bbm.banking.repository.UserRepository;
 import com.bbm.banking.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +15,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public User createUser(AccountRequestDto userRequest) {
         if (userRepository.existsByEmail(userRequest.getEmail())) {
             throw new RuntimeException("Já existe uma conta registrada com esse email!");
