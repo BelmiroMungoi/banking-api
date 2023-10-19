@@ -5,5 +5,6 @@ public class BankUtils {
     public static final String ACCOUNT_CREATED_SUCCESSFULLY = "A conta foi criada com sucesso";
     public static final String DEPOSIT_CREATED_SUCCESSFULLY = "O depósito foi realizado com sucesso";
     public static final String TRANSFER_CREATED_SUCCESSFULLY = "A transferência foi realizada com sucesso";
+    public static final String WITHDRAW_CREATED_SUCCESSFULLY = "O saque foi realizado com sucesso";
 
 }
