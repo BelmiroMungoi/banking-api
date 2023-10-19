@@ -1,7 +1,7 @@
 package com.bbm.banking.service.impl;
 
 import com.bbm.banking.dto.request.AccountRequestDto;
-import com.bbm.banking.dto.request.DepositRequest;
+import com.bbm.banking.dto.request.TransactionRequest;
 import com.bbm.banking.dto.request.TransferRequest;
 import com.bbm.banking.dto.response.AccountInfo;
 import com.bbm.banking.dto.response.HttpResponse;
@@ -43,18 +43,9 @@ public class BankAccountServiceImpl implements BankAccountService {
                 .build();
         var savedAccount = accountRepository.save(bankAccount);
 
-        return HttpResponse.builder()
-                .responseCode(HttpStatus.CREATED.value())
-                .responseStatus(HttpStatus.CREATED)
-                .responseMessage(ACCOUNT_CREATED_SUCCESSFULLY)
-                .createdAt(LocalDateTime.now())
-                .accountInfo(AccountInfo.builder()
-                        .accountId(savedAccount.getId())
-                        .accountNumber(savedAccount.getAccountNumber())
-                        .accountBalance(savedAccount.getAccountBalance())
-                        .accountOwner(Mapper.mapUserToResponseDto(savedAccount.getUser()))
-                        .build())
-                .build();
+        return httpResponse(HttpStatus.CREATED,
+                ACCOUNT_CREATED_SUCCESSFULLY,
+                savedAccount);
     }
 
     @Override
@@ -86,42 +77,39 @@ public class BankAccountServiceImpl implements BankAccountService {
         accountRepository.save(accountRecipient);
         accountRepository.save(accountSender);
 
-        return HttpResponse.builder()
-                .responseCode(HttpStatus.OK.value())
-                .responseStatus(HttpStatus.OK)
-                .responseMessage(TRANSFER_CREATED_SUCCESSFULLY)
-                .createdAt(LocalDateTime.now())
-                .accountInfo(AccountInfo.builder()
-                        .accountId(accountSender.getId())
-                        .accountNumber(accountSender.getAccountNumber())
-                        .accountBalance(accountSender.getAccountBalance())
-                        .accountOwner(Mapper.mapUserToResponseDto(accountSender.getUser()))
-                        .build())
-                .build();
+        return httpResponse(HttpStatus.OK,
+                TRANSFER_CREATED_SUCCESSFULLY,
+                accountSender);
     }
 
     @Override
     @Transactional
-    public HttpResponse deposit(DepositRequest request) {
+    public HttpResponse deposit(TransactionRequest request) {
         BankAccount bankAccount = getAccountById(request.getAccountId());
         bankAccount.deposit(request.getAmount());
         var savedStatement = statementRepository.save(BankStatement
                 .createDepositStatement(request.getAmount(), "Depósito realizado", bankAccount));
-        bankAccount.getStatements().add(savedStatement);
+        bankAccount.addStatement(savedStatement);
         var account = accountRepository.save(bankAccount);
 
-        return HttpResponse.builder()
-                .responseCode(HttpStatus.OK.value())
-                .responseStatus(HttpStatus.OK)
-                .responseMessage(DEPOSIT_CREATED_SUCCESSFULLY)
-                .createdAt(LocalDateTime.now())
-                .accountInfo(AccountInfo.builder()
-                        .accountId(account.getId())
-                        .accountNumber(account.getAccountNumber())
-                        .accountBalance(account.getAccountBalance())
-                        .accountOwner(Mapper.mapUserToResponseDto(account.getUser()))
-                        .build())
-                .build();
+        return httpResponse(HttpStatus.OK,
+                DEPOSIT_CREATED_SUCCESSFULLY,
+                account);
+    }
+
+    @Override
+    @Transactional
+    public HttpResponse withdraw(TransactionRequest withdrawRequest) {
+        BankAccount bankAccount = getAccountById(withdrawRequest.getAccountId());
+        bankAccount.withdraw(withdrawRequest.getAmount());
+        var statement = statementRepository.save(BankStatement
+                .createWithdrawStatement(withdrawRequest.getAmount().negate(), "Saque Realizado", bankAccount));
+        bankAccount.addStatement(statement);
+        var account = accountRepository.save(bankAccount);
+
+        return httpResponse(HttpStatus.OK,
+                WITHDRAW_CREATED_SUCCESSFULLY,
+                account);
     }
 
     @Override
@@ -161,5 +149,20 @@ public class BankAccountServiceImpl implements BankAccountService {
             isAccountNumberInvalid = accountRepository.existsByAccountNumber(randomNumber);
         } while (isAccountNumberInvalid);
         return randomNumber;
+    }
+
+    private static HttpResponse httpResponse(HttpStatus status, String message, BankAccount account) {
+        return HttpResponse.builder()
+                .responseCode(status.value())
+                .responseStatus(status)
+                .responseMessage(message)
+                .createdAt(LocalDateTime.now())
+                .accountInfo(AccountInfo.builder()
+                        .accountId(account.getId())
+                        .accountNumber(account.getAccountNumber())
+                        .accountBalance(account.getAccountBalance())
+                        .accountOwner(Mapper.mapUserToResponseDto(account.getUser()))
+                        .build())
+                .build();
     }
 }
