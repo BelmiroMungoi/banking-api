@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
-public class DepositRequest {
+public class TransactionRequest {
 
     private Long accountId;
     private BigDecimal amount;
