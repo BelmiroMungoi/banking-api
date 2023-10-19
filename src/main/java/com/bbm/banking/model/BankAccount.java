@@ -40,6 +40,9 @@ public class BankAccount {
     }
 
     public void deposit(BigDecimal amount) {
+        if (this.hasNonAmount(amount)) {
+            throw new RuntimeException("Falha na transacção. Você precisa no mínimo de 50.00 MZN para realizar um depósito");
+        }
         this.setAccountBalance(this.getAccountBalance().add(amount));
     }
 
@@ -61,12 +64,20 @@ public class BankAccount {
         this.setAccountBalance(this.getAccountBalance().subtract(amount));
     }
 
+    public void addStatement(BankStatement statement) {
+        this.statements.add(statement);
+    }
+
     public void addContact(BankAccount contact) {
         this.contacts.add(contact);
     }
 
     public boolean hasAvailableAmount(BigDecimal amount) {
         return this.getAccountBalance().compareTo(amount) > 0;
+    }
+
+    public boolean hasNonAmount(BigDecimal amount) {
+        return (amount == null || amount.equals(BigDecimal.ZERO) || amount.compareTo(new BigDecimal("50")) < 0);
     }
 
     public boolean isAmountGreaterThanBalance(BigDecimal amount) {
