@@ -2,6 +2,7 @@ package com.bbm.banking.controller;
 
 import com.bbm.banking.dto.request.AccountRequestDto;
 import com.bbm.banking.dto.request.DepositRequest;
+import com.bbm.banking.dto.request.TransferRequest;
 import com.bbm.banking.dto.response.AccountInfo;
 import com.bbm.banking.dto.response.HttpResponse;
 import com.bbm.banking.service.BankAccountService;
@@ -29,8 +30,18 @@ public class AccountController {
         return ResponseEntity.ok(accountService.findAllAccounts());
     }
 
+    @GetMapping("/{accountId}")
+    public ResponseEntity<AccountInfo> findAccountById(@PathVariable("accountId") Long accountId) {
+        return ResponseEntity.ok(accountService.findAccountById(accountId));
+    }
+
     @PutMapping("/deposit")
     public ResponseEntity<HttpResponse> depositMoney(@RequestBody DepositRequest request) {
         return ResponseEntity.ok(accountService.deposit(request));
+    }
+
+    @PutMapping("/transfer")
+    public ResponseEntity<HttpResponse> transferMoney(@RequestBody TransferRequest request) {
+        return ResponseEntity.ok(accountService.transfer(request));
     }
 }
