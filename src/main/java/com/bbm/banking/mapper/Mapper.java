@@ -1,6 +1,7 @@
 package com.bbm.banking.mapper;
 
 import com.bbm.banking.dto.response.AccountInfo;
+import com.bbm.banking.dto.response.ContactResponseDto;
 import com.bbm.banking.dto.response.UserResponseDto;
 import com.bbm.banking.model.BankAccount;
 import com.bbm.banking.model.User;
@@ -35,6 +36,7 @@ public class Mapper {
         accountInfo.setAccountNumber(account.getAccountNumber());
         accountInfo.setAccountBalance(account.getAccountBalance());
         accountInfo.setAccountOwner(mapUserToResponseDto(account.getUser()));
+        accountInfo.setContacts(mapBankAccountToContactResponseList(account.getContacts()));
         return accountInfo;
     }
 
@@ -44,5 +46,21 @@ public class Mapper {
             accountInfoList.add(mapBankAccountToAccountInfo(account));
         }
         return accountInfoList;
+    }
+
+    public static ContactResponseDto mapBankAccountToContactResponse(BankAccount account) {
+        ContactResponseDto contactResponse = new ContactResponseDto();
+        contactResponse.setAccountId(account.getId());
+        contactResponse.setAccountName(account.getUser().getFirstname() + " " + account.getUser().getLastname());
+        contactResponse.setAccountNumber(account.getAccountNumber());
+        return contactResponse;
+    }
+
+    public static List<ContactResponseDto> mapBankAccountToContactResponseList(List<BankAccount> accounts) {
+        List<ContactResponseDto> contactResponseList = new ArrayList<>();
+        for (BankAccount account: accounts) {
+            contactResponseList.add(mapBankAccountToContactResponse(account));
+        }
+        return contactResponseList;
     }
 }
