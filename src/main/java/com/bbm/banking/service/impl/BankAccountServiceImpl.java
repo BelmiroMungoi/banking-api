@@ -62,7 +62,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         }
         accountSender.transferTo(amountToTransfer, accountRecipient);
         var recipientStatement = statementRepository.save(BankStatement
-                .createTransferStatement(amountToTransfer, "Transferência Realizada",
+                .createTransferStatement(amountToTransfer, "Transferência Recebida",
                         accountSender, accountRecipient));
         var senderStatement = statementRepository.save(BankStatement
                 .createTransferStatement(amountToTransfer.negate(), "Transferência Realizada",
@@ -135,6 +135,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BankAccount getAccountByAccountNumber(String accountNumber) {
         return accountRepository.findBankAccountByAccountNumber(accountNumber).orElseThrow(() ->
                 new RuntimeException("Oops. Conta não foi encontrada!"));
