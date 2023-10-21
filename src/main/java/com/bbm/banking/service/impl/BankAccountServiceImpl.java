@@ -63,7 +63,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         accountSender.transferTo(amountToTransfer, accountRecipient);
         var recipientStatement = statementRepository.save(BankStatement
                 .createTransferStatement(amountToTransfer, "Transferência Recebida",
-                        accountSender, accountRecipient));
+                        accountRecipient, accountSender));
         var senderStatement = statementRepository.save(BankStatement
                 .createTransferStatement(amountToTransfer.negate(), "Transferência Realizada",
                         accountSender, accountRecipient));
