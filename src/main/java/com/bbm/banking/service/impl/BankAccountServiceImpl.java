@@ -54,6 +54,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         var accountSender = getAccountById(transferRequest.getAccountSenderId());
         var accountRecipient = getAccountByAccountNumber(transferRequest.getAccountRecipient());
         var amountToTransfer = transferRequest.getAmount();
+        var contacts = accountRepository.findByIdAndContacts(accountSender.getId(), accountRecipient);
         if (accountSender.equals(accountRecipient)) {
             throw new RuntimeException("Hah hah hah. Você não pode transferir dinheiro para você mesmo espertinho!");
         }
@@ -71,8 +72,10 @@ public class BankAccountServiceImpl implements BankAccountService {
         accountRecipient.addStatement(recipientStatement);
         accountSender.addStatement(senderStatement);
 
-        accountSender.addContact(accountRecipient);
-        //accountRecipient.addContact(accountSender);
+        if (contacts == null) {
+            accountSender.addContact(accountRecipient);
+            //accountRecipient.addContact(accountSender);
+        }
 
         accountRepository.save(accountRecipient);
         accountRepository.save(accountSender);
