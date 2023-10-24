@@ -5,6 +5,7 @@ import com.bbm.banking.dto.request.TransactionRequest;
 import com.bbm.banking.dto.request.TransferRequest;
 import com.bbm.banking.dto.response.AccountInfo;
 import com.bbm.banking.dto.response.HttpResponse;
+import com.bbm.banking.exception.BadRequestException;
 import com.bbm.banking.mapper.Mapper;
 import com.bbm.banking.model.BankAccount;
 import com.bbm.banking.model.BankStatement;
@@ -56,10 +57,10 @@ public class BankAccountServiceImpl implements BankAccountService {
         var amountToTransfer = transferRequest.getAmount();
         var contacts = accountRepository.findByIdAndContacts(accountSender.getId(), accountRecipient);
         if (accountSender.equals(accountRecipient)) {
-            throw new RuntimeException("Hah hah hah. Você não pode transferir dinheiro para você mesmo espertinho!");
+            throw new BadRequestException("Hah hah hah. Você não pode transferir dinheiro para você mesmo espertinho!");
         }
         if (amountToTransfer == null || amountToTransfer.compareTo(new BigDecimal("20")) < 0) {
-            throw new RuntimeException("Falha na transacção. Você só pode realizar uma transferência com valores maiores á 20.00 MZN");
+            throw new BadRequestException("Falha na transacção. Você só pode realizar uma transferência com valores maiores á 20.00 MZN");
         }
         accountSender.transferTo(amountToTransfer, accountRecipient);
         var recipientStatement = statementRepository.save(BankStatement
