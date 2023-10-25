@@ -11,5 +11,5 @@ import java.math.BigDecimal;
 public class CardRequestDto {
 
     private BigDecimal amount;
-    private BankAccount account;
+    private String accountNumber;
 }
