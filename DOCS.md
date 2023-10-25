@@ -2,9 +2,9 @@
 
 ## Actors
 
- - **ADMIN:** Should be able to access all the functionality of the system such as: Create an account, generate a credit/debit card, create a statement, view statements, create an invoice, deposit money, transfer money, balance enquiry and more.
- - **MANAGER:** Should be able to create an account, create statement, generate a credit/debit card, deposit money, transfer money.
- - **USER:** Should be able to create an account, generate a credit card, deposit money, transfer money, draw money, balance enquiry, view statements, pay invoice, make purchases, add contacts.
+ - **ADMIN:** Should be able to access all the functionality of the system such as: Create an account, generate a credit/debit card, create a statement, view statements, create an invoice, deposit money, transfer money, balance enquiry, accept loan requests, decline loan requests and more.
+ - **MANAGER:** Should be able to create an account, create statement, generate a credit/debit card, deposit money, transfer money, accept loan requests, decline loan requests.
+ - **USER:** Should be able to create an account, generate a credit card, deposit money, transfer money, withdraw money, balance enquiry, view statements, pay invoice, make purchases, add contacts, make loan requests.
 
 ## Functional Requirements
 
@@ -15,7 +15,7 @@
 - **Deposit Money:** A user should be able to deposit money in the bank.
 - **Transfer Money:** A user should be able to transfer money to another account.
 - **Balance Enquiry:** A user should be able to see how much money they have in their accounts.
-- **Draw Money:** A user should be able to take off their money from the bank.
+- **Withdraw Money:** A user should be able to take off their money from the bank.
 - **Make Purchases:** A user should be able to make credit and debit purchases.
 
 ### Important
@@ -24,6 +24,9 @@
 - **View Statements:** The user should be able the statements of their bank account and credit card.
 - **Create Invoice:** The system should be able to generate a credit card invoice.
 - **Pay Invoice:** The user should be able to pay the credit card invoice.
+- **Make Loan Requests:** The user should be able to make a make request.
+- **Accept Loan Request:** The Manager/Admin should be able to view and accept a loan request.
+- **Decline Loan Request:** The Manager/Admin should be able to view and decline a loan request.
 - **Add Contacts:** The system after a transfer transaction should be able to add the account numbers in their both contacts list for a quick transfer in the next time.
 
 ## BBM BANK UML ![BBM_Bank_UML.png](BBM_Bank_UML.png)
