@@ -18,5 +18,6 @@ public class AccountInfo {
     private String accountNumber;
     private BigDecimal accountBalance;
     private UserResponseDto accountOwner;
+    private CreditCardInfo creditCardInfo;
     private List<ContactResponseDto> contacts;
 }
