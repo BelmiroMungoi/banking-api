@@ -9,5 +9,7 @@ public interface CreditCardService {
 
     HttpResponse createCreditCard(String accountNumber);
     HttpResponse payInvoice(CardRequestDto cardRequestDto);
+    HttpResponse makeCreditPurchase(CardRequestDto cardRequestDto);
     CreditCard findByBankAccount(BankAccount account);
+    CreditCard findByAccountNumber(String accountNumber);
 }
