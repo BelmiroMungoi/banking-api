@@ -29,7 +29,7 @@ public class CreditCard {
     private List<BankStatement> statements;
 
     public void payInvoice(BigDecimal amount) {
-        if (this.hasInvoice()) {
+        if (hasInvoice()) {
             if (bankAccount.hasAvailableAmount(amount)) {
                 if (isAmountGreaterThanInvoice(amount)) {
                     throw new IllegalStateException("Falha na transacção. O valor inserido é maior ao da factura");
@@ -37,7 +37,6 @@ public class CreditCard {
                 invoice = invoice.subtract(amount);
                 bankAccount.setAccountBalance(bankAccount.getAccountBalance()
                         .subtract(amount));
-                createInvoicePaymentStatement(amount);
             } else {
                 throw new IllegalStateException("Você não tem saldo o suficiente na sua conta");
             }
@@ -49,33 +48,20 @@ public class CreditCard {
     public void makeCreditPurchase(BigDecimal amount) {
         if (this.hasBalance()) {
             if (this.isAmountGreaterThanBalance(amount)) {
-                throw new IllegalStateException("Falha na transacção. O valor inserido é maior ao da compra");
+                throw new IllegalStateException("Falha na transacção. O valor inserido é maior ao valor disponível no cartão!");
             }
             balance = balance.subtract(amount);
             invoice = invoice.add( new BigDecimal("10.00"));
-            createCreditPurchaseStatement(amount);
         } else {
-            throw new IllegalStateException("O seu cartão não possui saldo suficiente para realizar a compra");
+            throw new IllegalStateException("O seu cartão não possui saldo suficiente para realizar a compra!");
         }
     }
 
     public void makeDebitPurchase(BigDecimal amount) {
         this.bankAccount.pay(amount);
-        createDebitPurchaseStatement(amount);
     }
 
-    public void createInvoicePaymentStatement(BigDecimal amount) {
-        var statement = BankStatement.createInvoicePaymentStatement(amount, "Factura Paga", bankAccount);
-        this.statements.add(statement);
-    }
-
-    public void createCreditPurchaseStatement(BigDecimal amount) {
-        var statement = BankStatement.createCreditCardStatement(amount, "Pagamento Realizado", bankAccount);
-        this.statements.add(statement);
-    }
-
-    public void createDebitPurchaseStatement(BigDecimal amount) {
-        var statement = BankStatement.createDebitCardStatement(amount, "Pagamento Realizado no Débito", bankAccount);
+    public void addStatement(BankStatement statement) {
         this.statements.add(statement);
     }
 
@@ -87,11 +73,15 @@ public class CreditCard {
         return amount.compareTo(invoice) > 0;
     }
 
+    public boolean isAmountLowerThanInvoice(BigDecimal amount) {
+        return amount.compareTo(invoice) < 0;
+    }
+
     public boolean hasBalance() {
         return !balance.equals(BigDecimal.ZERO);
     }
 
     public boolean hasInvoice() {
-        return !invoice.equals(BigDecimal.ZERO);
+        return !(this.invoice.equals(BigDecimal.ZERO) && this.invoice.equals(new BigDecimal("0.00")));
     }
 }
