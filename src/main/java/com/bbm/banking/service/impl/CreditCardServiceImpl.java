@@ -46,7 +46,9 @@ public class CreditCardServiceImpl implements CreditCardService {
                 .invoice(BigDecimal.ZERO)
                 .bankAccount(savedAccount)
                 .build();
+        savedAccount.setCreditCard(creditCard);
         creditCardRepository.save(creditCard);
+        accountRepository.save(savedAccount);
 
         return httpResponse(HttpStatus.CREATED,
                 CREDIT_CARD_CREATED_SUCCESSFULLY,
@@ -79,6 +81,7 @@ public class CreditCardServiceImpl implements CreditCardService {
                 "Compra Realizada", creditCard.getBankAccount()));
         creditCard.addStatement(statement);
         creditCardRepository.save(creditCard);
+
         return httpResponse(HttpStatus.OK,
                 CREDIT_PURCHASE_SUCCESSFULLY,
                 creditCard.getBankAccount());
