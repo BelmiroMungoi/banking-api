@@ -1,11 +1,9 @@
 package com.bbm.banking.mapper;
 
-import com.bbm.banking.dto.response.AccountInfo;
-import com.bbm.banking.dto.response.ContactResponseDto;
-import com.bbm.banking.dto.response.StatementResponseDto;
-import com.bbm.banking.dto.response.UserResponseDto;
+import com.bbm.banking.dto.response.*;
 import com.bbm.banking.model.BankAccount;
 import com.bbm.banking.model.BankStatement;
+import com.bbm.banking.model.CreditCard;
 import com.bbm.banking.model.User;
 import com.bbm.banking.model.enums.StatementType;
 
@@ -42,6 +40,9 @@ public class Mapper {
         accountInfo.setAccountBalance(account.getAccountBalance());
         accountInfo.setAccountOwner(mapUserToResponseDto(account.getUser()));
         accountInfo.setContacts(mapBankAccountToContactResponseList(account.getContacts()));
+        if (account.getCreditCard() != null) {
+            accountInfo.setCreditCardInfo(mapCreditCardToCreditCardInfo(account.getCreditCard()));
+        }
         return accountInfo;
     }
 
@@ -94,5 +95,21 @@ public class Mapper {
             statementResponseList.add(mapBankStatementToStatementResponse(statement));
         }
         return statementResponseList;
+    }
+
+    public static CreditCardInfo mapCreditCardToCreditCardInfo(CreditCard creditCard) {
+        CreditCardInfo creditCardInfo = new CreditCardInfo();
+        creditCardInfo.setCardNumber(creditCard.getCardNumber());
+        creditCardInfo.setBalance(creditCard.getBalance());
+        creditCardInfo.setInvoice(creditCard.getInvoice());
+        return creditCardInfo;
+    }
+
+    public static List<CreditCardInfo> mapCreditCardToCreditCardInfoList(List<CreditCard> creditCards) {
+        List<CreditCardInfo> creditCardInfoList = new ArrayList<>();
+        for (CreditCard creditCard : creditCards) {
+            creditCardInfoList.add(mapCreditCardToCreditCardInfo(creditCard));
+        }
+        return creditCardInfoList;
     }
 }
