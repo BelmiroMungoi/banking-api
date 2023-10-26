@@ -1,5 +1,6 @@
 package com.bbm.banking.model;
 
+import com.bbm.banking.exception.BadRequestException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -62,6 +63,15 @@ public class BankAccount {
             throw new RuntimeException("Você não têm dinheiro suficiente para fazer um pagamento");
         }
         this.setAccountBalance(this.getAccountBalance().subtract(amount));
+    }
+
+    public void transferToCreditCard(BigDecimal amount) {
+        if (this.hasAvailableAmount(amount)) {
+            this.creditCard.setBalance(this.creditCard.getBalance().add(amount));
+            this.setAccountBalance(this.getAccountBalance().subtract(amount));
+        } else {
+            throw new BadRequestException("Você não têm dinheiro suficiente para transferir para o cartão!");
+        }
     }
 
     public void addStatement(BankStatement statement) {
