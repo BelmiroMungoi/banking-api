@@ -12,11 +12,20 @@ import java.util.List;
 public interface BankAccountService {
 
     HttpResponse createAccount(AccountRequestDto accountRequestDto);
+
     HttpResponse transfer(TransferRequest transferRequest);
+
     HttpResponse deposit(TransactionRequest transactionRequest);
+
     HttpResponse withdraw(TransactionRequest withdrawRequest);
+
+    HttpResponse transferToCreditCard(TransactionRequest transactionRequest);
+
     List<AccountInfo> findAllAccounts();
+
     AccountInfo findAccountById(Long accountId);
+
     BankAccount getAccountById(Long accountId);
+
     BankAccount getAccountByAccountNumber(String accountNumber);
 }
