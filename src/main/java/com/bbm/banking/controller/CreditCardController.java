@@ -31,6 +31,11 @@ public class CreditCardController {
         return ResponseEntity.ok(creditCardService.makeCreditPurchase(cardRequestDto));
     }
 
+    @PutMapping("/purchase/debit")
+    public ResponseEntity<HttpResponse> debitPurchase(@RequestBody CardRequestDto cardRequestDto) {
+        return ResponseEntity.ok(creditCardService.makeDebitPurchase(cardRequestDto));
+    }
+
     @GetMapping
     public ResponseEntity<CreditCardInfo> findByAccountId(@RequestParam("accountId") Long accountId) {
         return ResponseEntity.ok(creditCardService.findByBankAccountId(accountId));
