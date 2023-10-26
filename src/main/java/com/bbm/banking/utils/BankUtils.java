@@ -9,5 +9,5 @@ public class BankUtils {
     public static final String CREDIT_CARD_CREATED_SUCCESSFULLY = "O seu cartão foi gerado com sucesso";
     public static final String INVOICE_PAID_SUCCESSFULLY = "A factura foi paga com sucesso";
     public static final String CREDIT_PURCHASE_SUCCESSFULLY = "A compra foi realizada com sucesso";
-
+    public static final String DEBIT_PURCHASE_SUCCESSFULLY = "A compra foi realizada com sucesso no débito";
 }
