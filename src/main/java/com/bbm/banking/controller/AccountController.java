@@ -49,4 +49,9 @@ public class AccountController {
     public ResponseEntity<HttpResponse> withdrawMoney(@RequestBody TransactionRequest request) {
         return ResponseEntity.ok(accountService.withdraw(request));
     }
+
+    @PutMapping("/transferToCredit")
+    public ResponseEntity<HttpResponse> transferToCredit(@RequestBody TransactionRequest request) {
+        return ResponseEntity.ok(accountService.transferToCreditCard(request));
+    }
 }
