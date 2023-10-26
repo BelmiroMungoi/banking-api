@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/creditCard")
@@ -39,5 +41,10 @@ public class CreditCardController {
     @GetMapping
     public ResponseEntity<CreditCardInfo> findByAccountId(@RequestParam("accountId") Long accountId) {
         return ResponseEntity.ok(creditCardService.findByBankAccountId(accountId));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<CreditCardInfo>> findAllCreditCard() {
+        return ResponseEntity.ok(creditCardService.findAllCreditCard());
     }
 }

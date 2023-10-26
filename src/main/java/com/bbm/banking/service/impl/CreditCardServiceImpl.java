@@ -19,9 +19,11 @@ import com.bbm.banking.utils.RandomNumberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.bbm.banking.utils.BankUtils.*;
 
@@ -35,6 +37,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     private final BankStatementRepository statementRepository;
 
     @Override
+    @Transactional
     public HttpResponse createCreditCard(String accountNumber) {
         var savedAccount = accountService.getAccountByAccountNumber(accountNumber);
         if (creditCardRepository.existsByBankAccount(savedAccount)) {
@@ -57,6 +60,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
+    @Transactional
     public HttpResponse payInvoice(CardRequestDto cardRequestDto) {
         CreditCard creditCard = findByAccountNumber(cardRequestDto.getAccountNumber());
         if (creditCard.isAmountLowerThanInvoice(cardRequestDto.getAmount())) {
@@ -75,6 +79,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
+    @Transactional
     public HttpResponse makeCreditPurchase(CardRequestDto cardRequestDto) {
         CreditCard creditCard = findByAccountNumber(cardRequestDto.getAccountNumber());
         creditCard.makeCreditPurchase(cardRequestDto.getAmount());
@@ -89,6 +94,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
+    @Transactional
     public HttpResponse makeDebitPurchase(CardRequestDto cardRequestDto) {
         CreditCard creditCard = findByAccountNumber(cardRequestDto.getAccountNumber());
         creditCard.makeDebitPurchase(cardRequestDto.getAmount());
@@ -103,6 +109,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CreditCardInfo findByBankAccountId(Long accountId) {
         var creditCard = creditCardRepository.findByBankAccountId(accountId).orElseThrow(() ->
                 new EntityNotFoundException("Cartão de crédito não existe!!!"));
@@ -110,6 +117,14 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<CreditCardInfo> findAllCreditCard() {
+        var cards = creditCardRepository.findAll();
+        return Mapper.mapCreditCardToCreditCardInfoList(cards);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public CreditCard findByAccountNumber(String accountNumber) {
         return creditCardRepository.findByBankAccountAccountNumber(accountNumber).orElseThrow(() ->
                 new EntityNotFoundException("Essa conta não possui um cartão de crédito!!!"));
