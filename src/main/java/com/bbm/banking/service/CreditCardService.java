@@ -13,6 +13,7 @@ public interface CreditCardService {
     HttpResponse payInvoice(CardRequestDto cardRequestDto);
 
     HttpResponse makeCreditPurchase(CardRequestDto cardRequestDto);
+    HttpResponse makeDebitPurchase(CardRequestDto cardRequestDto);
 
     CreditCardInfo findByBankAccountId(Long accountId);
 
