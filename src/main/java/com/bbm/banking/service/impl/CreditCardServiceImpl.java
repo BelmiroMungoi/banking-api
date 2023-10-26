@@ -89,6 +89,20 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
+    public HttpResponse makeDebitPurchase(CardRequestDto cardRequestDto) {
+        CreditCard creditCard = findByAccountNumber(cardRequestDto.getAccountNumber());
+        creditCard.makeDebitPurchase(cardRequestDto.getAmount());
+        var statement = statementRepository.save(BankStatement.createDebitCardStatement(cardRequestDto.getAmount(),
+                "Compra no Débito", creditCard.getBankAccount()));
+        creditCard.addStatement(statement);
+        creditCardRepository.save(creditCard);
+
+        return httpResponse(HttpStatus.OK,
+                DEBIT_PURCHASE_SUCCESSFULLY,
+                creditCard.getBankAccount());
+    }
+
+    @Override
     public CreditCardInfo findByBankAccountId(Long accountId) {
         var creditCard = creditCardRepository.findByBankAccountId(accountId).orElseThrow(() ->
                 new EntityNotFoundException("Cartão de crédito não existe!!!"));
