@@ -2,6 +2,7 @@ package com.bbm.banking.service.impl;
 
 import com.bbm.banking.dto.request.CardRequestDto;
 import com.bbm.banking.dto.response.AccountInfo;
+import com.bbm.banking.dto.response.CreditCardInfo;
 import com.bbm.banking.dto.response.HttpResponse;
 import com.bbm.banking.exception.BadRequestException;
 import com.bbm.banking.exception.EntityNotFoundException;
@@ -88,9 +89,10 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public CreditCard findByBankAccount(BankAccount account) {
-        return creditCardRepository.findByBankAccount(account).orElseThrow(() ->
+    public CreditCardInfo findByBankAccountId(Long accountId) {
+        var creditCard = creditCardRepository.findByBankAccountId(accountId).orElseThrow(() ->
                 new EntityNotFoundException("Cartão de crédito não existe!!!"));
+        return Mapper.mapCreditCardToCreditCardInfo(creditCard);
     }
 
     @Override
