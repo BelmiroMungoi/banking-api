@@ -117,6 +117,22 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
+    @Transactional
+    public HttpResponse transferToCreditCard(TransactionRequest transactionRequest) {
+        BankAccount bankAccount = getAccountById(transactionRequest.getAccountId());
+        bankAccount.transferToCreditCard(transactionRequest.getAmount());
+        var statement = statementRepository.save(BankStatement
+                .createCreditCardTransferStatement(transactionRequest.getAmount().negate(),
+                        "Transferência Para Cartão", bankAccount));
+        bankAccount.addStatement(statement);
+        var account = accountRepository.save(bankAccount);
+
+        return httpResponse(HttpStatus.OK,
+                TRANSFER_CREATED_SUCCESSFULLY,
+                account);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<AccountInfo> findAllAccounts() {
         List<BankAccount> accounts = accountRepository.findAll();
