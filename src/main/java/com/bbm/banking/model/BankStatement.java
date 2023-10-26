@@ -96,4 +96,15 @@ public class BankStatement {
                 .accountRecipient(null)
                 .build();
     }
+
+    public static BankStatement createCreditCardTransferStatement(BigDecimal amount, String message, BankAccount accountOwner) {
+        return BankStatement.builder()
+                .amount(amount)
+                .message(message)
+                .createdAt(LocalDateTime.now())
+                .statementType(StatementType.CREDIT_CARD_TRANSFER)
+                .accountOwner(accountOwner)
+                .accountRecipient(null)
+                .build();
+    }
 }
