@@ -100,6 +100,8 @@ public class Mapper {
     public static CreditCardInfo mapCreditCardToCreditCardInfo(CreditCard creditCard) {
         CreditCardInfo creditCardInfo = new CreditCardInfo();
         creditCardInfo.setCardNumber(creditCard.getCardNumber());
+        creditCardInfo.setAccountName(creditCard.getBankAccount().getUser().getFirstname() + " " +
+                creditCard.getBankAccount().getUser().getLastname());
         creditCardInfo.setBalance(creditCard.getBalance());
         creditCardInfo.setInvoice(creditCard.getInvoice());
         return creditCardInfo;
