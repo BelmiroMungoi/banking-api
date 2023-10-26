@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 public class CreditCardInfo {
 
     private String cardNumber;
+    private String accountName;
     private BigDecimal balance;
     private BigDecimal invoice;
 }
