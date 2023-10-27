@@ -38,6 +38,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     public HttpResponse createAccount(AccountRequestDto accountRequestDto) {
         var accountNumber = generateAccountNumber();
         BankAccount bankAccount = BankAccount.builder()
+                .createdAt(LocalDateTime.now())
                 .accountNumber(accountNumber)
                 .accountBalance(BigDecimal.ZERO)
                 .user(userService.createUser(accountRequestDto))

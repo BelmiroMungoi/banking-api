@@ -45,6 +45,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         }
         var generateCardNumber = generateCardNumber();
         CreditCard creditCard = CreditCard.builder()
+                .createdAt(LocalDateTime.now())
                 .cardNumber(generateCardNumber)
                 .balance(new BigDecimal("10000.00"))
                 .invoice(BigDecimal.ZERO)
