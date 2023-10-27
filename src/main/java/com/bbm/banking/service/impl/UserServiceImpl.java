@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
                 .isUserEnabled(true)
                 .isUserNonLocked(true)
                 .address(savedAddress)
+                .role(userRequest.getRole())
                 .build();
         return userRepository.save(userToBeSaved);
     }
