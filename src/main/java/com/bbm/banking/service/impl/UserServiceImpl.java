@@ -1,6 +1,7 @@
 package com.bbm.banking.service.impl;
 
 import com.bbm.banking.dto.request.AccountRequestDto;
+import com.bbm.banking.model.Address;
 import com.bbm.banking.model.User;
 import com.bbm.banking.repository.UserRepository;
 import com.bbm.banking.service.UserService;
@@ -34,6 +35,13 @@ public class UserServiceImpl implements UserService {
                 .password(userRequest.getPassword())
                 .isUserEnabled(true)
                 .isUserNonLocked(true)
+                .address(Address.builder()
+                        .province(userRequest.getProvince())
+                        .district(userRequest.getDistrict())
+                        .street(userRequest.getStreet())
+                        .houseNumber(userRequest.getHouseNumber())
+                        .zipCode(userRequest.getZipCode())
+                        .build())
                 .build();
         return userRepository.save(userToBeSaved);
     }
