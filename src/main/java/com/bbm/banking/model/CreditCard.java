@@ -24,8 +24,9 @@ public class CreditCard {
     @Column(nullable = false)
     private BigDecimal balance;
     @OneToOne
+    @JoinColumn(name = "bank_account_id")
     private BankAccount bankAccount;
-    @OneToMany
+    @OneToMany(mappedBy = "creditCard")
     private List<BankStatement> statements;
 
     public void payInvoice(BigDecimal amount) {

@@ -18,18 +18,30 @@ public class BankAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, unique = true)
     private String accountNumber;
+
     @Column(nullable = false)
     private BigDecimal accountBalance;
+
     @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
+
     @OneToOne
-    @JoinColumn(name = "creditCard_id")
+    @JoinColumn(name = "card_id")
     private CreditCard creditCard;
+
     @OneToMany
     private List<BankStatement> statements;
+
     @OneToMany
+    @JoinTable(
+            name = "account_contacts",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "contact_id")
+    )
     private List<BankAccount> contacts;
 
     public void transferTo(BigDecimal amount, BankAccount recipient) {

@@ -1,5 +1,6 @@
 package com.bbm.banking.model;
 
+import com.bbm.banking.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,22 +21,37 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String firstname;
+
     @Column(nullable = false)
     private String lastname;
+
     @Column(nullable = false, unique = true)
     private String email;
+
     @Column(nullable = false, unique = true)
     private String phoneNumber;
+
     @Column(nullable = false)
     private String username;
+
     @Column(nullable = false)
     private String password;
+
     @Column(nullable = false)
     private LocalDate birthdate;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     private boolean isUserNonLocked;
     private boolean isUserEnabled;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

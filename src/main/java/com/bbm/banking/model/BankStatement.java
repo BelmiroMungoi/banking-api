@@ -18,15 +18,24 @@ public class BankStatement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private BigDecimal amount;
     private String message;
+
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
+
     @Enumerated(EnumType.STRING)
     private StatementType statementType;
+
+    @ManyToOne
+    @JoinColumn(name = "card_id")
+    private CreditCard creditCard;
+
     @ManyToOne
     private BankAccount accountOwner;
+
     @ManyToOne
     private BankAccount accountRecipient;
 
