@@ -4,6 +4,7 @@ import com.bbm.banking.dto.request.AccountRequestDto;
 import com.bbm.banking.model.Address;
 import com.bbm.banking.model.User;
 import com.bbm.banking.repository.UserRepository;
+import com.bbm.banking.service.AddressService;
 import com.bbm.banking.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final AddressService addressService;
 
     @Override
     @Transactional
@@ -24,7 +26,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByPhoneNumber(userRequest.getPhoneNumber())) {
             throw new RuntimeException("Oops. Já existe uma conta registrada com esse número de celular");
         }
-
+        var savedAddress = addressService.saveAddress(userRequest);
         User userToBeSaved = User.builder()
                 .firstname(userRequest.getFirstname())
                 .lastname(userRequest.getLastname())
@@ -35,13 +37,7 @@ public class UserServiceImpl implements UserService {
                 .password(userRequest.getPassword())
                 .isUserEnabled(true)
                 .isUserNonLocked(true)
-                .address(Address.builder()
-                        .province(userRequest.getProvince())
-                        .district(userRequest.getDistrict())
-                        .street(userRequest.getStreet())
-                        .houseNumber(userRequest.getHouseNumber())
-                        .zipCode(userRequest.getZipCode())
-                        .build())
+                .address(savedAddress)
                 .build();
         return userRepository.save(userToBeSaved);
     }
