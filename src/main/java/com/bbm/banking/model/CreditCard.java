@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -17,15 +18,23 @@ public class CreditCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime createdAt;
+
     @Column(nullable = false, unique = true)
     private String cardNumber;
+
     @Column(nullable = false)
     private BigDecimal invoice;
+
     @Column(nullable = false)
     private BigDecimal balance;
+
     @OneToOne
     @JoinColumn(name = "bank_account_id")
     private BankAccount bankAccount;
+
     @OneToMany(mappedBy = "creditCard")
     private List<BankStatement> statements;
 

@@ -17,8 +17,8 @@ public class AccountRequestDto {
     private String phoneNumber;
     private String username;
     private String password;
-    private String district;
     private String province;
+    private String district;
     private String street;
     private Integer houseNumber;
     private Integer zipCode;

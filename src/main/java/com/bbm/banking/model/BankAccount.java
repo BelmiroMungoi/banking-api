@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -18,6 +19,9 @@ public class BankAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime createdAt;
 
     @Column(nullable = false, unique = true)
     private String accountNumber;
@@ -38,7 +42,7 @@ public class BankAccount {
 
     @OneToMany
     @JoinTable(
-            name = "account_contacts",
+            name = "bank_account_contacts",
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "contact_id")
     )
