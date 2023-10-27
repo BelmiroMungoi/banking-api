@@ -1,5 +1,6 @@
 package com.bbm.banking.dto.request;
 
+import com.bbm.banking.model.enums.Role;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,5 +17,12 @@ public class AccountRequestDto {
     private String phoneNumber;
     private String username;
     private String password;
+    private String district;
+    private String province;
+    private String street;
+    private Integer houseNumber;
+    private Integer zipCode;
     private LocalDate birthdate;
+    private Role role;
+
 }
