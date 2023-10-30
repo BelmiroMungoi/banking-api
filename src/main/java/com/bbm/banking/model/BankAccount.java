@@ -50,7 +50,7 @@ public class BankAccount {
 
     public void transferTo(BigDecimal amount, BankAccount recipient) {
         if (!this.hasAvailableAmount(amount)) {
-            throw new RuntimeException("Você não têm saldo suficiente para realizar a transferência");
+            throw new BadRequestException("Você não têm saldo suficiente para realizar a transferência");
         }
         recipient.setAccountBalance(recipient.getAccountBalance().add(amount));
         this.setAccountBalance(this.getAccountBalance().subtract(amount));
@@ -58,7 +58,7 @@ public class BankAccount {
 
     public void deposit(BigDecimal amount) {
         if (this.hasNonAmount(amount)) {
-            throw new RuntimeException("Falha na transacção. Você precisa no mínimo de 50.00 MZN para realizar um depósito");
+            throw new BadRequestException("Falha na transacção. Você precisa no mínimo de 50.00 MZN para realizar um depósito");
         }
         this.setAccountBalance(this.getAccountBalance().add(amount));
     }
@@ -66,17 +66,17 @@ public class BankAccount {
     public void withdraw(BigDecimal amount) {
         if (this.hasAvailableAmount(amount)) {
             if (this.isAmountGreaterThanBalance(amount)) {
-                throw new RuntimeException("Falha na transacção. O valor inserido é maior ao valor disponível na sua conta!");
+                throw new BadRequestException("Falha na transacção. O valor inserido é maior ao valor disponível na sua conta!");
             }
             this.setAccountBalance(this.getAccountBalance().subtract(amount));
         } else {
-            throw new RuntimeException("Você não têm dinheiro suficiente para fazer um saque");
+            throw new BadRequestException("Você não têm dinheiro suficiente para fazer um saque");
         }
     }
 
     public void pay(BigDecimal amount) {
         if (!this.hasAvailableAmount(amount)) {
-            throw new RuntimeException("Você não têm dinheiro suficiente para fazer um pagamento");
+            throw new BadRequestException("Você não têm dinheiro suficiente para fazer um pagamento");
         }
         this.setAccountBalance(this.getAccountBalance().subtract(amount));
     }

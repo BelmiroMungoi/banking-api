@@ -1,6 +1,7 @@
 package com.bbm.banking.service.impl;
 
 import com.bbm.banking.dto.request.AccountRequestDto;
+import com.bbm.banking.exception.BadRequestException;
 import com.bbm.banking.model.Address;
 import com.bbm.banking.model.User;
 import com.bbm.banking.repository.UserRepository;
@@ -21,10 +22,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User createUser(AccountRequestDto userRequest) {
         if (userRepository.existsByEmail(userRequest.getEmail())) {
-            throw new RuntimeException("Já existe uma conta registrada com esse email!");
+            throw new BadRequestException("Já existe uma conta registada com esse email!");
         }
         if (userRepository.existsByPhoneNumber(userRequest.getPhoneNumber())) {
-            throw new RuntimeException("Oops. Já existe uma conta registrada com esse número de celular");
+            throw new BadRequestException("Oops. Já existe uma conta registada com esse número de celular");
         }
         var savedAddress = addressService.saveAddress(userRequest);
         User userToBeSaved = User.builder()

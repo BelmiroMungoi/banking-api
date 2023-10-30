@@ -1,6 +1,7 @@
 package com.bbm.banking.service.impl;
 
 import com.bbm.banking.dto.response.StatementResponseDto;
+import com.bbm.banking.exception.EntityNotFoundException;
 import com.bbm.banking.mapper.Mapper;
 import com.bbm.banking.model.BankStatement;
 import com.bbm.banking.repository.BankStatementRepository;
@@ -28,7 +29,7 @@ public class BankStatementServiceImpl implements BankStatementService {
     @Transactional(readOnly = true)
     public StatementResponseDto findStatementByIdAndAccountId(Long id, Long accountId) {
         BankStatement statement = statementRepository.findByIdAndAccountOwnerId(id, accountId)
-                .orElseThrow(() -> new RuntimeException("Extracto da transferência não foi encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Extracto da transferência não foi encontrado"));
         return Mapper.mapBankStatementToStatementResponse(statement);
     }
 }

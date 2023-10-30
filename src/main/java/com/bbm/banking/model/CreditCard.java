@@ -1,5 +1,6 @@
 package com.bbm.banking.model;
 
+import com.bbm.banking.exception.BadRequestException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,28 +43,28 @@ public class CreditCard {
         if (hasInvoice()) {
             if (bankAccount.hasAvailableAmount(amount)) {
                 if (isAmountGreaterThanInvoice(amount)) {
-                    throw new IllegalStateException("Falha na transacção. O valor inserido é maior ao da factura");
+                    throw new BadRequestException("Falha na transacção. O valor inserido é maior ao da factura");
                 }
                 invoice = invoice.subtract(amount);
                 bankAccount.setAccountBalance(bankAccount.getAccountBalance()
                         .subtract(amount));
             } else {
-                throw new IllegalStateException("Você não tem saldo o suficiente na sua conta");
+                throw new BadRequestException("Você não tem saldo o suficiente na sua conta");
             }
         } else {
-            throw new RuntimeException("O seu cartão não possui nenhuma factura");
+            throw new BadRequestException("O seu cartão não possui nenhuma factura");
         }
     }
 
     public void makeCreditPurchase(BigDecimal amount) {
         if (this.hasBalance()) {
             if (this.isAmountGreaterThanBalance(amount)) {
-                throw new IllegalStateException("Falha na transacção. O valor inserido é maior ao valor disponível no cartão!");
+                throw new BadRequestException("Falha na transacção. O valor inserido é maior ao valor disponível no cartão!");
             }
             balance = balance.subtract(amount);
             invoice = invoice.add( new BigDecimal("10.00"));
         } else {
-            throw new IllegalStateException("O seu cartão não possui saldo suficiente para realizar a compra!");
+            throw new BadRequestException("O seu cartão não possui saldo suficiente para realizar a compra!");
         }
     }
 

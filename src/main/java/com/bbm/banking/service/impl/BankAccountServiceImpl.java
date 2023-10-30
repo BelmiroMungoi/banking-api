@@ -6,6 +6,7 @@ import com.bbm.banking.dto.request.TransferRequest;
 import com.bbm.banking.dto.response.AccountInfo;
 import com.bbm.banking.dto.response.HttpResponse;
 import com.bbm.banking.exception.BadRequestException;
+import com.bbm.banking.exception.EntityNotFoundException;
 import com.bbm.banking.mapper.Mapper;
 import com.bbm.banking.model.BankAccount;
 import com.bbm.banking.model.BankStatement;
@@ -144,7 +145,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Transactional(readOnly = true)
     public AccountInfo findAccountById(Long accountId) {
         var account = accountRepository.findById(accountId).orElseThrow(() ->
-                new RuntimeException("Oops. Conta não foi encontrada"));
+                new EntityNotFoundException("Oops. A Conta inserida não foi encontrada!!!"));
         return Mapper.mapBankAccountToAccountInfo(account);
     }
 
@@ -152,14 +153,14 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Transactional(readOnly = true)
     public BankAccount getAccountById(Long accountId) {
         return accountRepository.findById(accountId).orElseThrow(() ->
-                new RuntimeException("Oops. Conta não foi encontrada!"));
+                new EntityNotFoundException("Oops. A Conta inserida não foi encontrada!!!"));
     }
 
     @Override
     @Transactional(readOnly = true)
     public BankAccount getAccountByAccountNumber(String accountNumber) {
         return accountRepository.findBankAccountByAccountNumber(accountNumber).orElseThrow(() ->
-                new RuntimeException("Oops. Conta não foi encontrada!"));
+                new EntityNotFoundException("Oops. A Conta inserida não foi encontrada!!!"));
     }
 
     private String generateAccountNumber() {
