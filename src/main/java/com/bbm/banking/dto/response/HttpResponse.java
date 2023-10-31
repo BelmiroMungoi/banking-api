@@ -18,5 +18,5 @@ public class HttpResponse {
     private HttpStatus responseStatus;
     private String responseMessage;
     private LocalDateTime createdAt;
-    private AccountInfo accountInfo;
+    private AccountDetails accountDetails;
 }
