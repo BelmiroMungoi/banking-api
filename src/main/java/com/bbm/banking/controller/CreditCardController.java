@@ -4,6 +4,7 @@ import com.bbm.banking.dto.request.CardRequestDto;
 import com.bbm.banking.dto.response.CreditCardInfo;
 import com.bbm.banking.dto.response.HttpResponse;
 import com.bbm.banking.service.CreditCardService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,17 +25,17 @@ public class CreditCardController {
     }
 
     @PutMapping("/invoice")
-    public ResponseEntity<HttpResponse> payInvoice(@RequestBody CardRequestDto cardRequestDto) {
+    public ResponseEntity<HttpResponse> payInvoice(@Valid @RequestBody CardRequestDto cardRequestDto) {
         return ResponseEntity.ok(creditCardService.payInvoice(cardRequestDto));
     }
 
     @PutMapping("/purchase")
-    public ResponseEntity<HttpResponse> creditPurchase(@RequestBody CardRequestDto cardRequestDto) {
+    public ResponseEntity<HttpResponse> creditPurchase(@Valid @RequestBody CardRequestDto cardRequestDto) {
         return ResponseEntity.ok(creditCardService.makeCreditPurchase(cardRequestDto));
     }
 
     @PutMapping("/purchase/debit")
-    public ResponseEntity<HttpResponse> debitPurchase(@RequestBody CardRequestDto cardRequestDto) {
+    public ResponseEntity<HttpResponse> debitPurchase(@Valid @RequestBody CardRequestDto cardRequestDto) {
         return ResponseEntity.ok(creditCardService.makeDebitPurchase(cardRequestDto));
     }
 

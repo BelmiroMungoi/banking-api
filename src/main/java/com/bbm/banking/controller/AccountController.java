@@ -6,6 +6,7 @@ import com.bbm.banking.dto.request.TransferRequest;
 import com.bbm.banking.dto.response.AccountInfo;
 import com.bbm.banking.dto.response.HttpResponse;
 import com.bbm.banking.service.BankAccountService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class AccountController {
     private final BankAccountService accountService;
 
     @PostMapping("/create")
-    public ResponseEntity<HttpResponse> createAccount(@RequestBody AccountRequestDto requestDto) {
+    public ResponseEntity<HttpResponse> createAccount(@Valid @RequestBody AccountRequestDto requestDto) {
         return new ResponseEntity<>(accountService.createAccount(requestDto), HttpStatus.CREATED);
     }
 
@@ -35,23 +36,23 @@ public class AccountController {
         return ResponseEntity.ok(accountService.findAccountById(accountId));
     }
 
-    @PutMapping("/deposit")
-    public ResponseEntity<HttpResponse> depositMoney(@RequestBody TransactionRequest request) {
-        return ResponseEntity.ok(accountService.deposit(request));
-    }
-
     @PutMapping("/transfer")
-    public ResponseEntity<HttpResponse> transferMoney(@RequestBody TransferRequest request) {
+    public ResponseEntity<HttpResponse> transferMoney(@Valid @RequestBody TransferRequest request) {
         return ResponseEntity.ok(accountService.transfer(request));
     }
 
+    @PutMapping("/deposit")
+    public ResponseEntity<HttpResponse> depositMoney(@Valid @RequestBody TransactionRequest request) {
+        return ResponseEntity.ok(accountService.deposit(request));
+    }
+
     @PutMapping("/withdraw")
-    public ResponseEntity<HttpResponse> withdrawMoney(@RequestBody TransactionRequest request) {
+    public ResponseEntity<HttpResponse> withdrawMoney(@Valid @RequestBody TransactionRequest request) {
         return ResponseEntity.ok(accountService.withdraw(request));
     }
 
     @PutMapping("/transferToCredit")
-    public ResponseEntity<HttpResponse> transferToCredit(@RequestBody TransactionRequest request) {
+    public ResponseEntity<HttpResponse> transferToCredit(@Valid @RequestBody TransactionRequest request) {
         return ResponseEntity.ok(accountService.transferToCreditCard(request));
     }
 }
