@@ -1,6 +1,7 @@
 package com.bbm.banking.service.impl;
 
 import com.bbm.banking.dto.request.CardRequestDto;
+import com.bbm.banking.dto.response.AccountDetails;
 import com.bbm.banking.dto.response.AccountInfo;
 import com.bbm.banking.dto.response.CreditCardInfo;
 import com.bbm.banking.dto.response.HttpResponse;
@@ -148,11 +149,12 @@ public class CreditCardServiceImpl implements CreditCardService {
                 .responseStatus(status)
                 .responseMessage(message)
                 .createdAt(LocalDateTime.now())
-                .accountInfo(AccountInfo.builder()
+                .accountDetails(AccountDetails.builder()
                         .accountId(account.getId())
                         .accountNumber(account.getAccountNumber())
-                        .accountBalance(account.getAccountBalance())
-                        .accountOwner(Mapper.mapUserToResponseDto(account.getUser()))
+                        .accountName(account.getUser().getFirstname() + " " +
+                                account.getUser().getLastname())
+                        .newBalance(account.getAccountBalance())
                         .build())
                 .build();
     }

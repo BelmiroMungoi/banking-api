@@ -3,6 +3,7 @@ package com.bbm.banking.service.impl;
 import com.bbm.banking.dto.request.AccountRequestDto;
 import com.bbm.banking.dto.request.TransactionRequest;
 import com.bbm.banking.dto.request.TransferRequest;
+import com.bbm.banking.dto.response.AccountDetails;
 import com.bbm.banking.dto.response.AccountInfo;
 import com.bbm.banking.dto.response.HttpResponse;
 import com.bbm.banking.exception.BadRequestException;
@@ -180,11 +181,12 @@ public class BankAccountServiceImpl implements BankAccountService {
                 .responseStatus(status)
                 .responseMessage(message)
                 .createdAt(LocalDateTime.now())
-                .accountInfo(AccountInfo.builder()
+                .accountDetails(AccountDetails.builder()
                         .accountId(account.getId())
                         .accountNumber(account.getAccountNumber())
-                        .accountBalance(account.getAccountBalance())
-                        .accountOwner(Mapper.mapUserToResponseDto(account.getUser()))
+                        .accountName(account.getUser().getFirstname() + " " +
+                                account.getUser().getLastname())
+                        .newBalance(account.getAccountBalance())
                         .build())
                 .build();
     }
