@@ -10,12 +10,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class TransferRequest {
 
-    @NotBlank
     private Long accountSenderId;
 
     @NotBlank
     private String accountRecipient;
-
-    @NotBlank
     private BigDecimal amount;
 }

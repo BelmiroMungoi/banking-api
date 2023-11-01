@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class CardRequestDto {
 
-    @NotBlank
     private BigDecimal amount;
 
     @NotBlank

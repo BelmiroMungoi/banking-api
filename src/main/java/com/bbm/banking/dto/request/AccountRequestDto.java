@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -46,17 +45,10 @@ public class AccountRequestDto {
 
     @NotBlank
     private String street;
-
-    @NotBlank
     private Integer houseNumber;
-
-    @NotBlank
     private Integer zipCode;
-
-    @NotBlank
     private LocalDate birthdate;
 
-    @NotBlank
     private Role role;
 
 }

@@ -10,9 +10,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class TransactionRequest {
 
-    @NotBlank
     private Long accountId;
-
-    @NotBlank
     private BigDecimal amount;
 }
