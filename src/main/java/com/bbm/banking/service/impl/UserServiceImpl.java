@@ -5,9 +5,11 @@ import com.bbm.banking.exception.BadRequestException;
 import com.bbm.banking.model.Address;
 import com.bbm.banking.model.User;
 import com.bbm.banking.repository.UserRepository;
+import com.bbm.banking.security.JWTService;
 import com.bbm.banking.service.AddressService;
 import com.bbm.banking.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final AddressService addressService;
+    private final JWTService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -35,12 +39,13 @@ public class UserServiceImpl implements UserService {
                 .phoneNumber(userRequest.getPhoneNumber())
                 .birthdate(userRequest.getBirthdate())
                 .username(userRequest.getUsername())
-                .password(userRequest.getPassword())
+                .password(passwordEncoder.encode(userRequest.getPassword()))
                 .isUserEnabled(true)
                 .isUserNonLocked(true)
                 .address(savedAddress)
                 .role(userRequest.getRole())
                 .build();
         return userRepository.save(userToBeSaved);
+
     }
 }
