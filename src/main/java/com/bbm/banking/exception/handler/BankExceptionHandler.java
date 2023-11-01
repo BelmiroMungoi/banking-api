@@ -29,13 +29,12 @@ public class BankExceptionHandler extends ResponseEntityExceptionHandler {
     private final MessageSource messageSource;
 
     @Override
-    @ExceptionHandler({Exception.class, RuntimeException.class, Throwable.class})
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         List<ValidationError> validationErrors = new ArrayList<>();
 
-        for (ObjectError objectError: ((MethodArgumentNotValidException) ex)
-                .getBindingResult().getAllErrors()) {
+        for (ObjectError objectError:  ex.getBindingResult().getAllErrors()) {
             String name = ((FieldError) objectError).getField();
             String msg = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
             validationErrors.add(new ValidationError(name, msg));
