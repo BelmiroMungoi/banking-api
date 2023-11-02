@@ -2,6 +2,7 @@ package com.bbm.banking.controller;
 
 import com.bbm.banking.dto.response.StatementResponseDto;
 import com.bbm.banking.exception.handler.StandardErrorResponse;
+import com.bbm.banking.model.User;
 import com.bbm.banking.service.BankStatementService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,8 +45,8 @@ public class StatementController {
             }
     )
     @GetMapping
-    public ResponseEntity<List<StatementResponseDto>> findAllStatements(@RequestParam("accountId") Long accountId) {
-        return ResponseEntity.ok(statementService.findAllStatementsByAccountId(accountId));
+    public ResponseEntity<List<StatementResponseDto>> findAllStatements(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(statementService.findAllStatementsByAccount(user));
     }
 
     @Operation(
@@ -79,7 +81,7 @@ public class StatementController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<StatementResponseDto> findStatementById(@PathVariable("id") Long id,
-                                                                  @RequestParam("accountId") Long accountId) {
-        return ResponseEntity.ok(statementService.findStatementByIdAndAccountId(id, accountId));
+                                                                  @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(statementService.findStatementByIdAndAccount(id, user));
     }
 }

@@ -6,6 +6,7 @@ import com.bbm.banking.dto.request.TransferRequest;
 import com.bbm.banking.dto.response.AccountInfo;
 import com.bbm.banking.dto.response.HttpResponse;
 import com.bbm.banking.exception.handler.StandardErrorResponse;
+import com.bbm.banking.model.User;
 import com.bbm.banking.service.BankAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,6 +17,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -154,8 +156,9 @@ public class AccountController {
             }
     )
     @PutMapping("/transfer")
-    public ResponseEntity<HttpResponse> transferMoney(@Valid @RequestBody TransferRequest request) {
-        return ResponseEntity.ok(accountService.transfer(request));
+    public ResponseEntity<HttpResponse> transferMoney(@Valid @RequestBody TransferRequest request,
+                                                      @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(accountService.transfer(request, user));
     }
 
     @Operation(
@@ -191,8 +194,9 @@ public class AccountController {
             }
     )
     @PutMapping("/deposit")
-    public ResponseEntity<HttpResponse> depositMoney(@Valid @RequestBody TransactionRequest request) {
-        return ResponseEntity.ok(accountService.deposit(request));
+    public ResponseEntity<HttpResponse> depositMoney(@Valid @RequestBody TransactionRequest request,
+                                                     @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(accountService.deposit(request, user));
     }
 
     @Operation(
@@ -228,8 +232,9 @@ public class AccountController {
             }
     )
     @PutMapping("/withdraw")
-    public ResponseEntity<HttpResponse> withdrawMoney(@Valid @RequestBody TransactionRequest request) {
-        return ResponseEntity.ok(accountService.withdraw(request));
+    public ResponseEntity<HttpResponse> withdrawMoney(@Valid @RequestBody TransactionRequest request,
+                                                      @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(accountService.withdraw(request, user));
     }
 
     @Operation(
@@ -265,7 +270,8 @@ public class AccountController {
             }
     )
     @PutMapping("/transferToCredit")
-    public ResponseEntity<HttpResponse> transferToCredit(@Valid @RequestBody TransactionRequest request) {
-        return ResponseEntity.ok(accountService.transferToCreditCard(request));
+    public ResponseEntity<HttpResponse> transferToCredit(@Valid @RequestBody TransactionRequest request,
+                                                         @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(accountService.transferToCreditCard(request, user));
     }
 }

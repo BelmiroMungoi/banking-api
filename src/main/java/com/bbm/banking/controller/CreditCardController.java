@@ -1,9 +1,11 @@
 package com.bbm.banking.controller;
 
 import com.bbm.banking.dto.request.CardRequestDto;
+import com.bbm.banking.dto.request.TransactionRequest;
 import com.bbm.banking.dto.response.CreditCardInfo;
 import com.bbm.banking.dto.response.HttpResponse;
 import com.bbm.banking.exception.handler.StandardErrorResponse;
+import com.bbm.banking.model.User;
 import com.bbm.banking.service.CreditCardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,9 +61,8 @@ public class CreditCardController {
             }
     )
     @PostMapping
-    public ResponseEntity<HttpResponse> createCreditCard(@RequestParam("accountNumber")
-                                                             String accountNumber) {
-        return ResponseEntity.ok(creditCardService.createCreditCard(accountNumber));
+    public ResponseEntity<HttpResponse> createCreditCard(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(creditCardService.createCreditCard(user));
     }
 
     @Operation(
@@ -97,8 +99,9 @@ public class CreditCardController {
             }
     )
     @PutMapping("/invoice")
-    public ResponseEntity<HttpResponse> payInvoice(@Valid @RequestBody CardRequestDto cardRequestDto) {
-        return ResponseEntity.ok(creditCardService.payInvoice(cardRequestDto));
+    public ResponseEntity<HttpResponse> payInvoice(@Valid @RequestBody TransactionRequest cardRequestDto,
+                                                   @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(creditCardService.payInvoice(cardRequestDto, user));
     }
 
     @Operation(
@@ -134,8 +137,9 @@ public class CreditCardController {
             }
     )
     @PutMapping("/purchase")
-    public ResponseEntity<HttpResponse> creditPurchase(@Valid @RequestBody CardRequestDto cardRequestDto) {
-        return ResponseEntity.ok(creditCardService.makeCreditPurchase(cardRequestDto));
+    public ResponseEntity<HttpResponse> creditPurchase(@Valid @RequestBody TransactionRequest cardRequestDto,
+                                                       @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(creditCardService.makeCreditPurchase(cardRequestDto, user));
     }
 
     @Operation(
@@ -171,8 +175,9 @@ public class CreditCardController {
             }
     )
     @PutMapping("/purchase/debit")
-    public ResponseEntity<HttpResponse> debitPurchase(@Valid @RequestBody CardRequestDto cardRequestDto) {
-        return ResponseEntity.ok(creditCardService.makeDebitPurchase(cardRequestDto));
+    public ResponseEntity<HttpResponse> debitPurchase(@Valid @RequestBody TransactionRequest cardRequestDto,
+                                                      @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(creditCardService.makeDebitPurchase(cardRequestDto, user));
     }
 
     @Operation(
@@ -208,8 +213,8 @@ public class CreditCardController {
             }
     )
     @GetMapping
-    public ResponseEntity<CreditCardInfo> findByAccountId(@RequestParam("accountId") Long accountId) {
-        return ResponseEntity.ok(creditCardService.findByBankAccountId(accountId));
+    public ResponseEntity<CreditCardInfo> findByAccount(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(creditCardService.findByAccount(user));
     }
 
     @Operation(
