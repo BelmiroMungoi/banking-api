@@ -1,6 +1,5 @@
 package com.bbm.banking.controller;
 
-import com.bbm.banking.dto.request.CardRequestDto;
 import com.bbm.banking.dto.request.TransactionRequest;
 import com.bbm.banking.dto.response.CreditCardInfo;
 import com.bbm.banking.dto.response.HttpResponse;

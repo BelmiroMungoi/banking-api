@@ -12,5 +12,6 @@ public class AccountDetails {
     private Long accountId;
     private String accountNumber;
     private String accountName;
-    private BigDecimal newBalance;
+    private BigDecimal accountBalance;
+
 }

@@ -10,8 +10,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class TransferRequest {
 
-    private Long accountSenderId;
-
     @NotBlank
     private String accountRecipient;
     private BigDecimal amount;
