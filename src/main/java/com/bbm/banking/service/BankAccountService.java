@@ -6,6 +6,7 @@ import com.bbm.banking.dto.request.TransferRequest;
 import com.bbm.banking.dto.response.AccountInfo;
 import com.bbm.banking.dto.response.HttpResponse;
 import com.bbm.banking.model.BankAccount;
+import com.bbm.banking.model.User;
 
 import java.util.List;
 
@@ -13,13 +14,13 @@ public interface BankAccountService {
 
     HttpResponse createAccount(AccountRequestDto accountRequestDto);
 
-    HttpResponse transfer(TransferRequest transferRequest);
+    HttpResponse transfer(TransferRequest transferRequest, User user);
 
-    HttpResponse deposit(TransactionRequest transactionRequest);
+    HttpResponse deposit(TransactionRequest transactionRequest, User user);
 
-    HttpResponse withdraw(TransactionRequest withdrawRequest);
+    HttpResponse withdraw(TransactionRequest withdrawRequest, User user);
 
-    HttpResponse transferToCreditCard(TransactionRequest transactionRequest);
+    HttpResponse transferToCreditCard(TransactionRequest transactionRequest, User user);
 
     List<AccountInfo> findAllAccounts();
 
@@ -28,4 +29,5 @@ public interface BankAccountService {
     BankAccount getAccountById(Long accountId);
 
     BankAccount getAccountByAccountNumber(String accountNumber);
+    BankAccount getAccountByUser(User user);
 }
