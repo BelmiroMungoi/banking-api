@@ -11,6 +11,7 @@ import com.bbm.banking.exception.EntityNotFoundException;
 import com.bbm.banking.mapper.Mapper;
 import com.bbm.banking.model.BankAccount;
 import com.bbm.banking.model.BankStatement;
+import com.bbm.banking.model.User;
 import com.bbm.banking.repository.BankAccountRepository;
 import com.bbm.banking.repository.BankStatementRepository;
 import com.bbm.banking.service.BankAccountService;
@@ -54,8 +55,8 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     @Transactional
-    public HttpResponse transfer(TransferRequest transferRequest) {
-        var accountSender = getAccountById(transferRequest.getAccountSenderId());
+    public HttpResponse transfer(TransferRequest transferRequest, User user) {
+        var accountSender = getAccountByUser(user);
         var accountRecipient = getAccountByAccountNumber(transferRequest.getAccountRecipient());
         var amountToTransfer = transferRequest.getAmount();
         var contacts = accountRepository.findByIdAndContacts(accountSender.getId(), accountRecipient);
@@ -91,8 +92,8 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     @Transactional
-    public HttpResponse deposit(TransactionRequest request) {
-        BankAccount bankAccount = getAccountById(request.getAccountId());
+    public HttpResponse deposit(TransactionRequest request, User user) {
+        BankAccount bankAccount = getAccountByUser(user);
         bankAccount.deposit(request.getAmount());
         var savedStatement = statementRepository.save(BankStatement
                 .createDepositStatement(request.getAmount(), "Depósito realizado", bankAccount));
@@ -106,8 +107,8 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     @Transactional
-    public HttpResponse withdraw(TransactionRequest withdrawRequest) {
-        BankAccount bankAccount = getAccountById(withdrawRequest.getAccountId());
+    public HttpResponse withdraw(TransactionRequest withdrawRequest, User user) {
+        BankAccount bankAccount = getAccountByUser(user);
         bankAccount.withdraw(withdrawRequest.getAmount());
         var statement = statementRepository.save(BankStatement
                 .createWithdrawStatement(withdrawRequest.getAmount().negate(), "Saque Realizado", bankAccount));
@@ -121,8 +122,8 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     @Transactional
-    public HttpResponse transferToCreditCard(TransactionRequest transactionRequest) {
-        BankAccount bankAccount = getAccountById(transactionRequest.getAccountId());
+    public HttpResponse transferToCreditCard(TransactionRequest transactionRequest, User user) {
+        BankAccount bankAccount = getAccountByUser(user);
         bankAccount.transferToCreditCard(transactionRequest.getAmount());
         var statement = statementRepository.save(BankStatement
                 .createCreditCardTransferStatement(transactionRequest.getAmount().negate(),
@@ -164,6 +165,12 @@ public class BankAccountServiceImpl implements BankAccountService {
                 new EntityNotFoundException("Oops. A Conta inserida não foi encontrada!!!"));
     }
 
+    @Override
+    public BankAccount getAccountByUser(User user) {
+        return accountRepository.findBankAccountByUser(user).orElseThrow(() ->
+                new EntityNotFoundException("Oops. A conta não foi encontrada!!!"));
+    }
+
     private String generateAccountNumber() {
         final int NUMBER_OF_DIGITS = 10;
         boolean isAccountNumberInvalid;
@@ -186,7 +193,7 @@ public class BankAccountServiceImpl implements BankAccountService {
                         .accountNumber(account.getAccountNumber())
                         .accountName(account.getUser().getFirstname() + " " +
                                 account.getUser().getLastname())
-                        .newBalance(account.getAccountBalance())
+                        .accountBalance(account.getAccountBalance())
                         .build())
                 .build();
     }

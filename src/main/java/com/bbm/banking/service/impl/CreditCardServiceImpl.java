@@ -1,8 +1,7 @@
 package com.bbm.banking.service.impl;
 
-import com.bbm.banking.dto.request.CardRequestDto;
+import com.bbm.banking.dto.request.TransactionRequest;
 import com.bbm.banking.dto.response.AccountDetails;
-import com.bbm.banking.dto.response.AccountInfo;
 import com.bbm.banking.dto.response.CreditCardInfo;
 import com.bbm.banking.dto.response.HttpResponse;
 import com.bbm.banking.exception.BadRequestException;
@@ -11,6 +10,7 @@ import com.bbm.banking.mapper.Mapper;
 import com.bbm.banking.model.BankAccount;
 import com.bbm.banking.model.BankStatement;
 import com.bbm.banking.model.CreditCard;
+import com.bbm.banking.model.User;
 import com.bbm.banking.repository.BankAccountRepository;
 import com.bbm.banking.repository.BankStatementRepository;
 import com.bbm.banking.repository.CreditCardRepository;
@@ -39,8 +39,8 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Override
     @Transactional
-    public HttpResponse createCreditCard(String accountNumber) {
-        var savedAccount = accountService.getAccountByAccountNumber(accountNumber);
+    public HttpResponse createCreditCard(User user) {
+        var savedAccount = accountService.getAccountByUser(user);
         if (creditCardRepository.existsByBankAccount(savedAccount)) {
             throw new BadRequestException("Essa conta já possui um cartão de crédito!!!");
         }
@@ -63,8 +63,9 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Override
     @Transactional
-    public HttpResponse payInvoice(CardRequestDto cardRequestDto) {
-        CreditCard creditCard = findByAccountNumber(cardRequestDto.getAccountNumber());
+    public HttpResponse payInvoice(TransactionRequest cardRequestDto, User user) {
+        var account = accountService.getAccountByUser(user);
+        CreditCard creditCard = findByAccountNumber(account.getAccountNumber());
         if (creditCard.isAmountLowerThanInvoice(cardRequestDto.getAmount())) {
             throw new BadRequestException("Falha na transacção. O valor inserido é menor ao da factura!");
         }
@@ -82,8 +83,9 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Override
     @Transactional
-    public HttpResponse makeCreditPurchase(CardRequestDto cardRequestDto) {
-        CreditCard creditCard = findByAccountNumber(cardRequestDto.getAccountNumber());
+    public HttpResponse makeCreditPurchase(TransactionRequest cardRequestDto, User user) {
+        var account = accountService.getAccountByUser(user);
+        CreditCard creditCard = findByAccountNumber(account.getAccountNumber());
         creditCard.makeCreditPurchase(cardRequestDto.getAmount());
         var statement = statementRepository.save(BankStatement.createCreditCardStatement(cardRequestDto.getAmount(),
                 "Compra Realizada", creditCard.getBankAccount()));
@@ -97,8 +99,9 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Override
     @Transactional
-    public HttpResponse makeDebitPurchase(CardRequestDto cardRequestDto) {
-        CreditCard creditCard = findByAccountNumber(cardRequestDto.getAccountNumber());
+    public HttpResponse makeDebitPurchase(TransactionRequest cardRequestDto, User user) {
+        var account = accountService.getAccountByUser(user);
+        CreditCard creditCard = findByAccountNumber(account.getAccountNumber());
         creditCard.makeDebitPurchase(cardRequestDto.getAmount());
         var statement = statementRepository.save(BankStatement.createDebitCardStatement(cardRequestDto.getAmount(),
                 "Compra no Débito", creditCard.getBankAccount()));
@@ -112,8 +115,9 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Override
     @Transactional(readOnly = true)
-    public CreditCardInfo findByBankAccountId(Long accountId) {
-        var creditCard = creditCardRepository.findByBankAccountId(accountId).orElseThrow(() ->
+    public CreditCardInfo findByAccount(User user) {
+        var account = accountService.getAccountByUser(user);
+        var creditCard = creditCardRepository.findByBankAccount(account).orElseThrow(() ->
                 new EntityNotFoundException("Cartão de crédito não existe!!!"));
         return Mapper.mapCreditCardToCreditCardInfo(creditCard);
     }
@@ -154,7 +158,7 @@ public class CreditCardServiceImpl implements CreditCardService {
                         .accountNumber(account.getAccountNumber())
                         .accountName(account.getUser().getFirstname() + " " +
                                 account.getUser().getLastname())
-                        .newBalance(account.getAccountBalance())
+                        .accountBalance(account.getAccountBalance())
                         .build())
                 .build();
     }
