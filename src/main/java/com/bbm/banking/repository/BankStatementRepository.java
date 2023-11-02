@@ -1,5 +1,6 @@
 package com.bbm.banking.repository;
 
+import com.bbm.banking.model.BankAccount;
 import com.bbm.banking.model.BankStatement;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -8,7 +9,7 @@ import java.util.Optional;
 
 public interface BankStatementRepository extends JpaRepository<BankStatement, Long> {
 
-    List<BankStatement> findAllByAccountOwnerId(Long accountId);
+    List<BankStatement> findAllByAccountOwner(BankAccount account);
 
-    Optional<BankStatement> findByIdAndAccountOwnerId(Long id, Long accountId);
+    Optional<BankStatement> findByIdAndAccountOwner(Long id, BankAccount account);
 }
