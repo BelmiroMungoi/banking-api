@@ -19,3 +19,13 @@ The Banking Api is a secure and feature-rich web-based platform that empowers us
  - **Alerts and Notifications:** Stay informed about your account activity with real-time alerts for transactions, balance changes, and more.
 
 - **Profile Management:** Update your contact information, password, and notification preferences with ease.
+
+## 🛠 Technologies used
+### :coffee: Back end
+- [Java](https://www.oracle.com/br/java/)
+- JPA / Hibernate
+- [Spring Boot](https://spring.io/projects/spring-boot)
+- [Spring Framework](https://spring.io/projects/spring-framework)
+- [Spring Data JPA](https://spring.io/projects/spring-data-jpa) 
+- [Spring Security](https://spring.io/projects/spring-security)
+- [Maven](https://maven.apache.org/)
