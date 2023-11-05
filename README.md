@@ -36,4 +36,4 @@ You're welcome to contribute in the project. Feel free to fork this repository, 
 
 License:
 
-This project is licensed under the [Apache 2.0 License](http://www.apache.org/licenses/).
+This project is licensed under the [Apache-2.0 License](http://www.apache.org/licenses/).
