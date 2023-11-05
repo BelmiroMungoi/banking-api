@@ -29,3 +29,11 @@ The Banking Api is a secure and feature-rich web-based platform that empowers us
 - [Spring Data JPA](https://spring.io/projects/spring-data-jpa) 
 - [Spring Security](https://spring.io/projects/spring-security)
 - [Maven](https://maven.apache.org/)
+
+## Contributing:
+
+You're welcome to contribute in the project. Feel free to fork this repository, submit issues, or open pull requests to help improve the Online Banking Application.
+
+License:
+
+This project is licensed under the.
