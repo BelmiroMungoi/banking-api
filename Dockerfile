@@ -1,4 +1,4 @@
-FROM maven:4.0.0-openjdk-17 AS build
+FROM maven:3.9.5-openjdk-17 AS build
 WORKDIR /app
 COPY pom.xml /app
 RUN mvn dependency:resolve
@@ -7,6 +7,7 @@ RUN mvn clean
 RUN package -DskipTests -X
 
 FROM openjdk:17-alpine
-COPY --from=build /app/target/*.jar app.jar
+WORKDIR /app
+COPY --from=build /app/target/*.jar ./banking-api.jar
 EXPOSE 8080
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "banking-api.jar"]
