@@ -13,7 +13,10 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Official Documentation for the Online Banking Application(BBM Bank) API",
-                description = "BBM Bank it's a Digital Bank application developed by Belmiro Mungoi",
+                description = "The Banking Api is a secure and feature-rich web-based platform that empowers users to " +
+                        "manage their financial accounts conveniently and securely. Whether you are a bank customer or " +
+                        "a fintech enthusiast, this application offers a comprehensive set of functionalities to help " +
+                        "you take control of your financial life",
                 version = "1.0",
                 contact = @Contact(
                         name = "Belmiro Mungoi",
