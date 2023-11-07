@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.bbm.banking.BbmBankApiApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 96.958 s - in com.bbm.banking.BbmBankApiApplicationTests
