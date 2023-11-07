@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 description = "The Banking Api is a secure and feature-rich web-based platform that empowers users to " +
                         "manage their financial accounts conveniently and securely. Whether you are a bank customer or " +
                         "a fintech enthusiast, this application offers a comprehensive set of functionalities to help " +
-                        "you take control of your financial life",
+                        "you take control of your financial life.",
                 version = "1.0",
                 contact = @Contact(
                         name = "Belmiro Mungoi",
@@ -30,12 +30,12 @@ import io.swagger.v3.oas.annotations.servers.Server;
         ),
         servers = {
                 @Server(
-                        description = "Local Environment",
-                        url = "http://localhost:8080"
+                        description = "Production Environment",
+                        url = "http://ec2-13-49-245-175.eu-north-1.compute.amazonaws.com"
                 ),
                 @Server(
-                        description = "Production Environment",
-                        url = "https://localhost:8183/test"
+                        description = "Local Environment",
+                        url = "http://localhost:8080"
                 )
         },
         security = {
