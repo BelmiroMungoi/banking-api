@@ -1,10 +1,8 @@
-FROM maven:3.9.5-openjdk-17 AS build
+FROM maven:3.8.1-openjdk-17 AS build
 WORKDIR /app
-COPY pom.xml /app
-RUN mvn dependency:resolve
-COPY . /app
-RUN mvn clean
-RUN package -DskipTests -X
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean install
 
 FROM openjdk:17-alpine
 WORKDIR /app
