@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/creditCard")
+@RequestMapping("/api/v1/creditCards")
 @Tag(name = "Credit Card Management")
 public class CreditCardController {
 

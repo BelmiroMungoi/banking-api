@@ -24,7 +24,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/account")
+@RequestMapping("/api/v1/accounts")
 @Tag(name = "Account Management")
 public class AccountController {
 
@@ -55,7 +55,7 @@ public class AccountController {
                     )
             }
     )
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<HttpResponse> createAccount(@Valid @RequestBody AccountRequestDto requestDto) {
         return new ResponseEntity<>(accountService.createAccount(requestDto), HttpStatus.CREATED);
     }

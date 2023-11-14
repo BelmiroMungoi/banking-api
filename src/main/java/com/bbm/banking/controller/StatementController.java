@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/statement")
+@RequestMapping("/api/v1/statements")
 @Tag(name = "Statement Management")
 public class StatementController {
 
